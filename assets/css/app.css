@@ -338,7 +338,7 @@ button:disabled {
 }
 
 .pyline {
-    min-height: 1.4em;
+    min-height: 0.5em;
     margin-bottom: 12px;
 }
 

@@ -116,7 +116,7 @@ whether it came from AI search or was typed in manually.
 
 `sw.js` caches the app shell network-first (so a refreshed deploy is picked up
 automatically when online) and serves icons cache-first. `CACHE_NAME` is
-versioned (`shalom-cache-v3`); bump it whenever you change which files are
+versioned (`shalom-cache-v1`); bump it whenever you change which files are
 cached or their paths, so old installs don't get stuck serving stale assets.
 When an update is detected, the app shows a "tap to refresh" toast
 (`shalom:update-ready` event in `assets/js/app.js`).
