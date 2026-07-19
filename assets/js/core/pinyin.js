@@ -68,6 +68,30 @@ function tokenizeLineForPinyin(line) {
     return tokens;
 }
 
+// Plain-text version of the same annotation, for contexts that can't render
+// stacked <ruby>-style markup — e.g. sharing/copying lyrics as text. Each
+// Chinese line gets a second line underneath with pinyin readings; non-Chinese
+// lines (or the whole text, if it has no Hanzi) pass through unchanged.
+function lyricsWithPinyinText(text) {
+    const t = text || '';
+    if (!hasChinese(t)) return t;
+
+    return t.split('\n').map(line => {
+        if (line.trim() === '') return line;
+
+        const tokens = tokenizeLineForPinyin(line);
+        const hasZh = tokens.some(tok => tok.zh);
+        if (!hasZh) return line;
+
+        const py = tokens.map(tok => tok.zh
+            ? tok.py.map(p => p || '').join(' ')
+            : tok.text
+        ).join('').trim();
+
+        return py ? `${line}\n${py}` : line;
+    }).join('\n');
+}
+
 // Renders song lyrics; when showPinyin is on and the text contains Hanzi,
 // stacks each Chinese character above its pinyin reading.
 function Lyrics({ text, showPinyin }) {
