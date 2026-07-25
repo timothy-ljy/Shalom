@@ -149,11 +149,11 @@ function App() {
 
     return html`
         <${React.Fragment}>
-            <header className="app">
-            <h1>Shalom</h1>
-            <button className="gear" aria-label="Settings" onClick=${() => setSheet({ type: 'settings' })}>⚙</button>
+            <header className=${cx('flex items-center bg-surface border-b border-line px-5 pt-[calc(env(safe-area-inset-top,0px)+16px)] pb-[13px]')}>
+            <h1 className="font-bold text-xl tracking-wide text-primary">Shalom</h1>
+            <button className="ml-auto bg-transparent border-0 text-muted text-[1.15rem] py-1 px-1.5 leading-none cursor-pointer" aria-label="Settings" onClick=${() => setSheet({ type: 'settings' })}>⚙</button>
             </header>
-            <main>
+            <main className="flex-1 overflow-y-auto px-4 pt-5 pb-[calc(96px+env(safe-area-inset-bottom,0px))]">
             <${SearchPanel} active=${tab === 'search'} apiKey=${apiKey}
                 onSaveSong=${saveNewSong}
                 onViewSong=${s => setSheet({ type: 'song', song: s, preview: true })}
@@ -169,23 +169,24 @@ function App() {
             <${KeyPanel} active=${tab === 'key'} showToast=${showToast}/>
             </main>
 
-            <nav className="tabs">
+            <nav className=${NAV_TABS}>
             ${TABS.map(t => html`
-                <button key=${t} className=${tab === t ? 'on' : ''} onClick=${() => setTab(t)}>
+                <button key=${t} className=${cx(NAV_BTN, tab === t && NAV_BTN_ON)} onClick=${() => setTab(t)}>
+                ${tab === t && html`<span className=${NAV_INDICATOR}></span>`}
                 ${ICONS[t]}
                 ${t === 'search' ? 'Search' : t === 'library' ? 'Library' : t === 'setlist' ? 'Setlist' : 'Key'}
                 </button>`)}
             </nav>
 
             ${sheet && html`
-            <div className="overlay" onClick=${e => { if (e.target === e.currentTarget) setSheet(null); }}>
-                <div className="sheet" ref=${sheetElRef}
+            <div className=${OVERLAY} onClick=${e => { if (e.target === e.currentTarget) setSheet(null); }}>
+                <div className=${SHEET} ref=${sheetElRef}
                 onPointerDown=${onSheetPointerDown}
                 onPointerMove=${onSheetPointerMove}
                 onPointerUp=${onSheetPointerUp}
                 onPointerCancel=${onSheetPointerUp}
                 style=${isSongSheet ? { transform: `translateY(${dragY}px)`, transition: dragInfo.current.dragging ? 'none' : 'transform 0.2s ease' } : undefined}>
-                <div className="bar"></div>
+                <div className=${SHEET_BAR}></div>
                 ${sheet.type === 'song' && html`<${SongSheet} song=${sheet.song} preview=${!!sheet.preview}
                     onEdit=${s => setSheet({ type: 'edit', song: s, context: sheet.context })}
                     onAddToPl=${s => setSheet({ type: 'pickpl', song: s })}
@@ -235,8 +236,8 @@ function App() {
                 </div>
             </div>`}
 
-            ${updateReady && html`<div className="toast" style=${{ cursor: 'pointer' }} onClick=${() => window.location.reload()}>A new version is ready — tap to refresh</div>`}
-            ${toastMsg && html`<div className="toast">${toastMsg}</div>`}
+            ${updateReady && html`<div className=${cx(TOAST, 'cursor-pointer')} onClick=${() => window.location.reload()}>A new version is ready — tap to refresh</div>`}
+            ${toastMsg && html`<div className=${TOAST}>${toastMsg}</div>`}
         <//>`;
 }
 

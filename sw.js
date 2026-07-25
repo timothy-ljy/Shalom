@@ -1,11 +1,13 @@
-const CACHE_NAME = 'shalom-cache-v3';
+const CACHE_NAME = 'shalom-cache-v4';
 const ASSETS = [
     './',
     './index.html',
     './manifest.json',
     './assets/css/app.css',
+    './assets/js/tailwind.config.js',
     './assets/js/lib/htm.js',
     './assets/js/core/store.js',
+    './assets/js/core/ui.js',
     './assets/js/core/icons.js',
     './assets/js/core/pitch.js',
     './assets/js/core/pinyin.js',
