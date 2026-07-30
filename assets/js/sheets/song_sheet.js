@@ -50,19 +50,19 @@ function SongSheet({
     
     return html`
         <div>
-            <div className="songview" onClick=${closeOnTap} role="button" tabIndex="0" aria-label="Close"
+            <div className=${SONGVIEW} onClick=${closeOnTap} role="button" tabIndex="0" aria-label="Close"
             onKeyDown=${e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClose(); } }}>
-            ${song.key ? html`<div className="keychip">${song.key}</div>` : null}
-            <h3>${song.title}</h3>
-            <div className="author">${song.author} · ${langLabel(song.language)}</div>
-            <div className="rule"></div>
+            ${song.key ? html`<div className=${KEYCHIP}>${song.key}</div>` : null}
+            <h3 className=${SONGVIEW_H3}>${song.title}</h3>
+            <div className=${SONGVIEW_AUTHOR}>${song.author} · ${langLabel(song.language)}</div>
+            <div className=${SONGVIEW_RULE}></div>
             <${Lyrics} text=${song.lyrics || ''} showPinyin=${true}/>
             </div>
             ${!preview && html`
-            <div className="actions" style=${{ marginTop: '14px' }}>
-                <button className="small" onClick=${() => onAddToPl(song)}>+ Add to setlist</button>
-                <button className="small quiet" onClick=${() => onEdit(song)}>Edit</button>
-                <button className="small quiet" onClick=${e => { e.stopPropagation(); shareSong(); }}>Share</button>
+            <div className=${cx(ACTIONS, 'mt-3.5')}>
+                <button className=${btnClass('small')} onClick=${() => onAddToPl(song)}>+ Add to setlist</button>
+                <button className=${btnClass('small quiet')} onClick=${() => onEdit(song)}>Edit</button>
+                <button className=${btnClass('small quiet')} onClick=${e => { e.stopPropagation(); shareSong(); }}>Share</button>
             </div>`}
         </div>`;
 }

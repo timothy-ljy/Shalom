@@ -47,11 +47,11 @@ function SwipeRow({
     const prog = Math.min(1, -dx / ACTION_W);
     
     return html`
-        <div className="swiperow">
-            <button className="swipedel" aria-label="Remove"
+        <div className=${SWIPEROW}>
+            <button className=${SWIPEDEL} aria-label="Remove"
             style=${{ transform: `translateY(-50%) scale(${prog})`, opacity: prog, transition: dragging ? 'none' : 'transform .22s cubic-bezier(.22,.8,.2,1), opacity .22s ease' }}
             onClick=${() => { setDx(0); onRemove(); }}>✕</button>
-            <div className="swipecontent"
+            <div className=${SWIPECONTENT}
             style=${{ transform: `translateX(${dx}px)`, transition: dragging ? 'none' : 'transform .22s cubic-bezier(.22,.8,.2,1)' }}
             onPointerDown=${onDown} onPointerMove=${onMove} onPointerUp=${onUp} onPointerCancel=${onUp}>
             ${children}

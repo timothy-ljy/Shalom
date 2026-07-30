@@ -99,24 +99,24 @@ function Lyrics({ text, showPinyin }) {
     const pyReady = typeof window !== 'undefined' && !!window.pinyinPro;
     
     if (!showPinyin || !pyReady || !hasChinese(t)) {
-        return html`<div className="lyrics">${t}</div>`;
+        return html`<div className=${cx(LYRICS, 'whitespace-pre-wrap')}>${t}</div>`;
     }
 
     const lines = t.split('\n');
 
     return html`
-        <div className="lyrics pinyin">
+        <div className=${cx(LYRICS, 'whitespace-normal')}>
             ${lines.map((line, i) => line.trim() === ''
-                ? html`<div className="pyline" key=${i}>${' '}</div>`
+                ? html`<div className=${PYLINE} key=${i}>${' '}</div>`
                 : html`
-                    <div className="pyline" key=${i}>
+                    <div className=${PYLINE} key=${i}>
                     ${tokenizeLineForPinyin(line).flatMap((tok, j) => tok.zh
                         ? tok.chars.map((c, k) => html`
-                        <span className="pychar" key=${j + '-' + k}>
-                            <span className="hz">${c}</span>
-                            <span className="py">${tok.py[k] || ''}</span>
+                        <span className=${PYCHAR} key=${j + '-' + k}>
+                            <span className=${PYCHAR_HZ}>${c}</span>
+                            <span className=${PYCHAR_PY}>${tok.py[k] || ''}</span>
                         </span>`)
-                        : [html`<span className="plain" key=${j}>${tok.text}</span>`]
+                        : [html`<span className=${PY_PLAIN} key=${j}>${tok.text}</span>`]
                     )}
                     </div>`
             )}

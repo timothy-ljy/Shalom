@@ -189,52 +189,52 @@ function KeyPanel({
         null;
 
     return html`
-        <section className=${'panel' + (active ? ' active' : '')}>
-            <h2 className="section">Vocal key finder</h2>
-            <p className="hint">Sing or hum into the microphone. It shows the note you're on and tracks your lowest and highest notes to suggest a comfortable range. You can record takes to listen back.</p>
-            <div className="tuner">
-            <div className=${'notering' + (disp ? '' : ' idle')}>
-                <div className="note">${disp ? html`${disp.name}<small>${disp.oct}</small>` : '–'}</div>
-                <div className="hz">${disp ? disp.hz + ' Hz · ' + (disp.cents >= 0 ? '+' : '') + disp.cents + '¢' : ''}</div>
+        <section className=${panelClass(active)}>
+            <h2 className=${SECTION_H2}>Vocal key finder</h2>
+            <p className=${HINT_P}>Sing or hum into the microphone. It shows the note you're on and tracks your lowest and highest notes to suggest a comfortable range. You can record takes to listen back.</p>
+            <div className=${TUNER}>
+            <div className=${cx(NOTERING, disp ? NOTERING_ACTIVE : NOTERING_IDLE)}>
+                <div className=${NOTERING_NOTE}>${disp ? html`${disp.name}<small className=${NOTERING_NOTE_SMALL}>${disp.oct}</small>` : '–'}</div>
+                <div className=${NOTERING_HZ}>${disp ? disp.hz + ' Hz · ' + (disp.cents >= 0 ? '+' : '') + disp.cents + '¢' : ''}</div>
             </div>
-            <div className="centsbar">
-                <div className="mid"></div>
-                <div className="dot" style=${{ left: 'calc(' + (50 + (disp ? disp.cents : 0)) + '% - 4px)' }}></div>
+            <div className=${CENTSBAR}>
+                <div className=${CENTSBAR_MID}></div>
+                <div className=${CENTSBAR_DOT} style=${{ left: 'calc(' + (50 + (disp ? disp.cents : 0)) + '% - 4px)' }}></div>
             </div>
-            <div className="centslbl"><span>♭ flat</span><span>in tune</span><span>sharp ♯</span></div>
-            <div className="actions" style=${{ justifyContent: 'center' }}>
-                <button onClick=${toggleListen}>${listening ? 'Stop' : 'Start listening'}</button>
-                <button className=${recording ? 'danger' : 'quiet'} onClick=${toggleRecord}>
-                ${recording ? html`<span className="recdot"></span>Stop recording ${fmt(elapsed)}` : '● Record'}
+            <div className=${CENTSLBL}><span>♭ flat</span><span>in tune</span><span>sharp ♯</span></div>
+            <div className=${cx(ACTIONS, 'justify-center')}>
+                <button className=${btnClass()} onClick=${toggleListen}>${listening ? 'Stop' : 'Start listening'}</button>
+                <button className=${btnClass(recording ? 'danger' : 'quiet')} onClick=${toggleRecord}>
+                ${recording ? html`<span className=${RECDOT}></span>Stop recording ${fmt(elapsed)}` : '● Record'}
                 </button>
             </div>
             </div>
-            <div className="rangebox">
-            <div className="cell"><div className="lbl">Lowest</div><div className="val">${range.low !== null ? midiName(range.low) : '–'}</div></div>
-            <div className="cell"><div className="lbl">Highest</div><div className="val">${range.high !== null ? midiName(range.high) : '–'}</div></div>
+            <div className=${RANGEBOX}>
+            <div className=${RANGEBOX_CELL}><div className=${RANGEBOX_LBL}>Lowest</div><div className=${RANGEBOX_VAL}>${range.low !== null ? midiName(range.low) : '–'}</div></div>
+            <div className=${RANGEBOX_CELL}><div className=${RANGEBOX_LBL}>Highest</div><div className=${RANGEBOX_VAL}>${range.high !== null ? midiName(range.high) : '–'}</div></div>
             </div>
             ${advice && html`
-            <div className="card" style=${{ marginTop: '12px' }}>
-                <h3>Your range so far</h3>
-                <div className="meta">${advice.low} – ${advice.high} (${advice.span} semitones ≈ ${(advice.span / 12).toFixed(1)} octaves)</div>
-                <div style=${{ fontSize: '.9rem', lineHeight: 1.6 }}>A comfortable melody for you likely sits between <b>${advice.comfyLow}</b> and <b>${advice.comfyTop}</b>. When choosing a song key, check the melody's highest note and transpose so it lands at or below <b>${advice.comfyTop}</b>.</div>
+            <div className=${cx(CARD, 'mt-3')}>
+                <h3 className=${CARD_H3}>Your range so far</h3>
+                <div className=${CARD_META}>${advice.low} – ${advice.high} (${advice.span} semitones ≈ ${(advice.span / 12).toFixed(1)} octaves)</div>
+                <div className="text-[0.9rem] leading-[1.6]">A comfortable melody for you likely sits between <b>${advice.comfyLow}</b> and <b>${advice.comfyTop}</b>. When choosing a song key, check the melody's highest note and transpose so it lands at or below <b>${advice.comfyTop}</b>.</div>
             </div>`}
-            <div className="actions">
-            <button className="quiet small" onClick=${() => { rangeRef.current = { low: null, high: null }; setRange({ low: null, high: null }); }}>Reset range</button>
+            <div className=${ACTIONS}>
+            <button className=${btnClass('quiet small')} onClick=${() => { rangeRef.current = { low: null, high: null }; setRange({ low: null, high: null }); }}>Reset range</button>
             </div>
             ${takes.length > 0 && html`
-            <h2 className="section" style=${{ marginTop: '20px' }}>Recordings</h2>
-            <p className="hint">Kept until you close the app — tap Save to keep a copy on your device.</p>
+            <h2 className=${cx(SECTION_H2, 'mt-5')}>Recordings</h2>
+            <p className=${HINT_P}>Kept until you close the app — tap Save to keep a copy on your device.</p>
             ${takes.map(t => html`
-                <div className="take" key=${t.id}>
+                <div className=${TAKE} key=${t.id}>
                 <div>
-                    <div className="tn">Take ${t.n}</div>
-                    <div className="tm">${t.at}${t.rangeTxt ? ' · ' + t.rangeTxt : ''}</div>
+                    <div className=${TAKE_TN}>Take ${t.n}</div>
+                    <div className=${TAKE_TM}>${t.at}${t.rangeTxt ? ' · ' + t.rangeTxt : ''}</div>
                 </div>
-                <audio controls src=${t.url}></audio>
-                <a href=${t.url} download=${'take-' + t.n + '.' + t.ext}>Save</a>
-                <button className="xbtn" onClick=${() => deleteTake(t.id)}>✕</button>
+                <audio controls className="h-[34px] flex-1 min-w-[160px]" src=${t.url}></audio>
+                <a className=${TAKE_LINK} href=${t.url} download=${'take-' + t.n + '.' + t.ext}>Save</a>
+                <button className=${XBTN} onClick=${() => deleteTake(t.id)}>✕</button>
                 </div>`)}`}
-            <p className="micnote">Tip: sing a comfortable low note, then slide up gradually to your highest comfortable note. If the microphone can't start here, open this app in its own browser tab and allow mic access.</p>
+            <p className=${MICNOTE}>Tip: sing a comfortable low note, then slide up gradually to your highest comfortable note. If the microphone can't start here, open this app in its own browser tab and allow mic access.</p>
         </section>`;
 }
